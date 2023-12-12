@@ -44,4 +44,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function data_peserta()
+    {
+        return $this->hasOne(DataPeserta::class);
+    }
 }

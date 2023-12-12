@@ -10,7 +10,7 @@
                     <div class="card-header bg-success">
                         <b>Kelola Kelas</b>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body p-0">
                         <div class="table-responsive">
                             <table class="table table-sm table-bordered">
                                 <thead class="bg-success">

@@ -10,7 +10,7 @@
                     <div class="card-header">
                         <b>Kelola Akun</b>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body p-0">
                         <div class="table-responsive">
                             <table class="table table-bordered">
                                 <thead class="bg-success">

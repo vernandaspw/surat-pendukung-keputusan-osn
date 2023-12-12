@@ -14,3 +14,19 @@ surat-pendukung-keputusan-osn AL FURQON
 - Laravel 10
 - Livewire 3
 - Mysql
+
+cara menggunakan:
+admin
+- atur data kelas
+- buat data osn baru
+
+peserta
+-daftar
+-login
+-ikut seleksi OSN
+
+=======================================
+  
+'username' => 'admin',
+'password' => Hash::make('admin123'),
+'role' => 'admin'

@@ -12,6 +12,15 @@ class DataPesertaSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        // DB::table('data_pesertas')->insert([
+        //     [
+        //         'nik' => '1242342',
+        //         'user_id' => 2,
+        //         'nama' => 'peserta',
+        //         'tgl_lahir' => '2000-02-13',
+        //         'kelas_id' = null,
+        //     ],
+
+        // ]);
     }
 }

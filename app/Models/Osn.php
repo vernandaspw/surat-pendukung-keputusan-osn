@@ -9,4 +9,8 @@ class Osn extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+
+    function pesertas() {
+        return $this->hasMany(OsnPeserta::class);
+    }
 }

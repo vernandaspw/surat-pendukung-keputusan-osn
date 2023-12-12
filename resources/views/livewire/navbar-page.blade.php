@@ -1,5 +1,5 @@
 <div>
-    <header class="app-header shadow">
+    <header class="app-header shadow d-print-none">
         <nav class="navbar navbar-expand-lg navbar-light">
             <ul class="navbar-nav">
                 <li class="nav-item d-block d-xl-none">
