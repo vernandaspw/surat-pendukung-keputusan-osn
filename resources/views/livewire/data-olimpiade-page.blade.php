@@ -157,7 +157,7 @@
                             <div class="">
                                 <button
                                 onclick="confirm('Anda yakin meluluskan '+{{ $data_osn->peserta_lulus }} +' Peserta?') || event.stopImmediatePropagation()"
-                                wire:click="generateLulus"
+                                wire:click="generateLulus('{{ $data_osn->id }}')"
                                 class="btn btn-primary rounded-pill">Generate Kelulusan</button>
                                 <button wire:click="$toggle('lulus')" class="btn btn-warning rounded-pill">@if($lulus ==
                                     true)

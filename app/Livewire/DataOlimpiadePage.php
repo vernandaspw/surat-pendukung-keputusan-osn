@@ -16,7 +16,7 @@ class DataOlimpiadePage extends Component
             $this->data_osn = Osn::find($this->editID);
             $peserta = OsnPeserta::where('osn_id', $this->editID)->latest();
             if ($this->lulus == true) {
-                $peserta->where('status_lulus', true);
+                $peserta->where('status_lulus', true)->orderBy('nilai_saw', 'desc');
             }
             $this->data_pesertas = $peserta->get();
         }
@@ -155,9 +155,111 @@ class DataOlimpiadePage extends Component
         $op->save();
     }
 
-    public function generateLulus()
+    public function generateLulus($id)
     {
-        
+        dd($id);
+        // Contoh data siswa dalam bentuk array
+        $siswa1 = [
+            'nama_siswa' => 'Siswa A',
+            'matematika' => 75,
+            'fisika' => 60,
+            'kimia' => 90,
+            'biologi' => 40,
+        ];
+
+        $siswa2 = [
+            'nama_siswa' => 'Siswa B',
+            'matematika' => 60,
+            'fisika' => 80,
+            'kimia' => 40,
+            'biologi' => 95,
+        ];
+
+        $siswa3 = [
+            'nama_siswa' => 'Siswa C',
+            'matematika' => 90,
+            'fisika' => 40,
+            'kimia' => 75,
+            'biologi' => 55,
+        ];
+
+        $siswa4 = [
+            'nama_siswa' => 'Siswa D',
+            'matematika' => 40,
+            'fisika' => 95,
+            'kimia' => 55,
+            'biologi' => 70,
+        ];
+
+        $siswa5 = [
+            'nama_siswa' => 'Siswa E',
+            'matematika' => 70,
+            'fisika' => 70,
+            'kimia' => 70,
+            'biologi' => 70,
+        ];
+
+        $dataSiswa = [$siswa1, $siswa2, $siswa3, $siswa4, $siswa5];
+
+        // Tetapkan bobot untuk setiap kriteria dengan skala 1-5
+        $bobot = [
+            'matematika' => 5, // Contoh: Sangat Tinggi
+            'fisika' => 4, // Contoh: Tinggi
+            'kimia' => 3, // Contoh: Sedang
+            'biologi' => 2, // Contoh: Rendah
+        ];
+
+        // Inisialisasi matriks normalisasi dan matriks bobot normalisasi
+        $matriksNormalisasi = [];
+        $matriksBobotNormalisasi = [];
+
+        // Hitung matriks normalisasi
+        foreach ($dataSiswa as $data) {
+            $matriksNormalisasi[] = [
+                'matematika' => $data['matematika'] / 100,
+                'fisika' => $data['fisika'] / 100,
+                'kimia' => $data['kimia'] / 100,
+                'biologi' => $data['biologi'] / 100,
+            ];
+        }
+
+        // Hitung matriks bobot normalisasi
+        foreach ($matriksNormalisasi as $data) {
+            $matriksBobotNormalisasi[] = [
+                'matematika' => $data['matematika'] * $bobot['matematika'],
+                'fisika' => $data['fisika'] * $bobot['fisika'],
+                'kimia' => $data['kimia'] * $bobot['kimia'],
+                'biologi' => $data['biologi'] * $bobot['biologi'],
+            ];
+        }
+
+        // Hitung nilai SAW
+        $nilaiSAW = [];
+        foreach ($matriksBobotNormalisasi as $data) {
+            $totalBobotNormalisasi = array_sum($data);
+            $nilaiSAW[] = $totalBobotNormalisasi;
+        }
+
+        // Tampilkan hasil perhitungan
+        echo "Hasil Perhitungan SAW:\n";
+        for ($i = 0; $i < count($dataSiswa); $i++) {
+            echo "{$dataSiswa[$i]['nama_siswa']} : {$nilaiSAW[$i]}\n";
+        }
+
+        // Simpan nilai SAW ke dalam database (opsional)
+        $list_siswa = [];
+        foreach ($dataSiswa as $key => $data) {
+            $list_siswa[] = [
+                'nama_siswa' => $data['nama_siswa'],
+                'matematika' => $data['matematika'],
+                'fisika' => $data['fisika'],
+                'kimia' => $data['kimia'],
+                'biologi' => $data['biologi'],
+                'nilai_saw' => $nilaiSAW[$key],
+            ];
+        }
+        dd($list_siswa);
+
     }
 
 }
