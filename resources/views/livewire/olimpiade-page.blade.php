@@ -5,7 +5,7 @@
             <div class=" d-flex justify-content-between">
                 <div class="">
                    @if(auth()->user()->role != 'peserta')
-                   <button wire:click="$set('$osn_id', null)" class="btn btn-warning rounded-pill">Kembali</button>
+                   <button wire:click="$set('osn_id', null)" class="btn btn-warning rounded-pill">Kembali</button>
                    @endif
                 </div>
                 <div class="">

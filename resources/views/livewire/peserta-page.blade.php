@@ -186,8 +186,8 @@
                                         <td>{{ $data->nik }}</td>
                                         <td>{{ $data->nama }}</td>
                                         <td>{{ $data->tgl_lahir }}</td>
-                                        <td>{{ $data->kelas->nama }}</td>
-                                        <td>{{ $data->subkelas->nama }}</td>
+                                        <td>{{ $data->kelas ? $data->kelas->nama : '-' }}</td>
+                                        <td>{{ $data->subkelas ? $data->subkelas->nama : '-' }}</td>
                                         <td>{{ $data->alamat }}</td>
                                         <td>{{ $data->telp }}</td>
                                         <td>{{ $data->isaktif == 1? 'Aktif' : 'Tidak aktif'}}</td>

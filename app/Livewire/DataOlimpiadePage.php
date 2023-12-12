@@ -157,7 +157,7 @@ class DataOlimpiadePage extends Component
 
     public function generateLulus()
     {
-
+        
     }
 
 }

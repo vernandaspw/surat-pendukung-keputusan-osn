@@ -218,10 +218,10 @@
                                                 {{ $peserta->nilai_saw }}
                                             </td>
                                             <td>
-                                                <button wire:click="toggleSeleksi('{{ $peserta->id }}')" class="btn {{ $peserta->status_seleksi ? 'btn-success' : 'btn-danger' }} rounded-pill">{{ $peserta->status_seleksi ? 'ikuti seleksi' : 'tidak seleksi' }}</button>
+                                                <button wire:click="toggleSeleksi('{{ $peserta->id }}')" class="btn {{ $peserta->status_seleksi ? 'btn-success' : 'btn-danger' }} rounded-pill btn-sm">{{ $peserta->status_seleksi ? 'ikuti seleksi' : 'tidak' }}</button>
                                             </td>
                                             <td>
-                                                <button wire:click="toggleLulus('{{ $peserta->id }}')" class="btn {{ $peserta->status_lulus ? 'btn-success' : 'btn-danger' }} rounded-pill">{{ $peserta->status_lulus ? 'lulus' : 'pending' }}</button>
+                                                <button wire:click="toggleLulus('{{ $peserta->id }}')" class="btn {{ $peserta->status_lulus ? 'btn-success' : 'btn-danger' }} rounded-pill btn-sm">{{ $peserta->status_lulus ? 'lulus' : 'pending' }}</button>
                                             </td>
                                         </tr>
                                         @endforeach
