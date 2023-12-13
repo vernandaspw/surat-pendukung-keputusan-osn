@@ -4,7 +4,7 @@
         <div class="card-body">
             <div class=" d-flex justify-content-between">
                 <div class="">
-                   @if(auth()->user()->role != 'peserta')
+                   @if(auth()->check() && auth()->user()->role != 'peserta')
                    <button wire:click="$set('osn_id', null)" class="btn btn-warning rounded-pill">Kembali</button>
                    @endif
                 </div>
@@ -12,7 +12,7 @@
                     <b>{{ $osn->nama }}</b>
                 </div>
                 <div class="">
-                    @if(auth()->user()->role == 'peserta')
+                    @if(auth()->check() && auth()->user()->role == 'peserta')
                     <button wire:click="$set('daftarPage', true)" class="btn btn-success rounded-pill">Daftar / Ikut
                         OSN</button>
                         @endif
