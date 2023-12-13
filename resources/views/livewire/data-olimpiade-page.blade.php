@@ -156,8 +156,8 @@
                             </div>
                             <div class="">
                                 <button
-                                onclick="confirm('Anda yakin meluluskan '+{{ $data_osn->peserta_lulus }} +' Peserta?') || event.stopImmediatePropagation()"
-                                wire:click="generateLulus('{{ $data_osn->id }}')"
+                                onclick="confirm('Anda yakin generate peserta yang ikut seleksi?') || event.stopImmediatePropagation()"
+                                wire:click="generateLulus()"
                                 class="btn btn-primary rounded-pill">Generate Kelulusan</button>
                                 <button wire:click="$toggle('lulus')" class="btn btn-warning rounded-pill">@if($lulus ==
                                     true)
@@ -174,6 +174,7 @@
                             <div class="table-responsive">
                                 <table class="table  table-sm table-bordered table-hover">
                                     <thead class="bg-success text-white">
+                                        <th>No</th>
                                         <th>NIK</th>
                                         <th>Nama</th>
                                         <th>Tgl lahir</th>
@@ -189,6 +190,7 @@
                                     <tbody>
                                         @foreach ($data_pesertas as $peserta)
                                         <tr>
+                                            <td>{{ $loop->iteration }}</td>
                                             <td>
                                                 {{ $peserta->data_peserta->nik }}
                                             </td>

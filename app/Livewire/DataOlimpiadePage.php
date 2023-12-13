@@ -16,9 +16,9 @@ class DataOlimpiadePage extends Component
             $this->data_osn = Osn::find($this->editID);
             $peserta = OsnPeserta::where('osn_id', $this->editID)->latest();
             if ($this->lulus == true) {
-                $peserta->where('status_lulus', true)->orderBy('nilai_saw', 'desc');
+                $peserta->where('status_lulus', true);
             }
-            $this->data_pesertas = $peserta->get();
+            $this->data_pesertas = $peserta->orderBy('nilai_saw', 'desc')->get();
         }
 
         $this->datas = $data->get();
@@ -114,7 +114,7 @@ class DataOlimpiadePage extends Component
         $osn->save();
 
         $this->createPage = false;
-        $this->dispatch('success', pesan: 'berhasil tambah osn');
+        $this->dispatch('success', pesan: 'berhasil edit osn');
     }
 
     public function tutupPage()
@@ -155,81 +155,32 @@ class DataOlimpiadePage extends Component
         $op->save();
     }
 
-    public function generateLulus($id)
+    public function generateLulus()
     {
-        dd($id);
-        // Contoh data siswa dalam bentuk array
-        $siswa1 = [
-            'nama_siswa' => 'Siswa A',
-            'matematika' => 75,
-            'fisika' => 60,
-            'kimia' => 90,
-            'biologi' => 40,
-        ];
-
-        $siswa2 = [
-            'nama_siswa' => 'Siswa B',
-            'matematika' => 60,
-            'fisika' => 80,
-            'kimia' => 40,
-            'biologi' => 95,
-        ];
-
-        $siswa3 = [
-            'nama_siswa' => 'Siswa C',
-            'matematika' => 90,
-            'fisika' => 40,
-            'kimia' => 75,
-            'biologi' => 55,
-        ];
-
-        $siswa4 = [
-            'nama_siswa' => 'Siswa D',
-            'matematika' => 40,
-            'fisika' => 95,
-            'kimia' => 55,
-            'biologi' => 70,
-        ];
-
-        $siswa5 = [
-            'nama_siswa' => 'Siswa E',
-            'matematika' => 70,
-            'fisika' => 70,
-            'kimia' => 70,
-            'biologi' => 70,
-        ];
-
-        $dataSiswa = [$siswa1, $siswa2, $siswa3, $siswa4, $siswa5];
-
-        // Tetapkan bobot untuk setiap kriteria dengan skala 1-5
-        $bobot = [
-            'matematika' => 5, // Contoh: Sangat Tinggi
-            'fisika' => 4, // Contoh: Tinggi
-            'kimia' => 3, // Contoh: Sedang
-            'biologi' => 2, // Contoh: Rendah
-        ];
+        $osn = Osn::find($this->editID);
+        $pesertas = OsnPeserta::where('osn_id', $this->editID)->where('status_seleksi', true)->get();
 
         // Inisialisasi matriks normalisasi dan matriks bobot normalisasi
         $matriksNormalisasi = [];
         $matriksBobotNormalisasi = [];
 
         // Hitung matriks normalisasi
-        foreach ($dataSiswa as $data) {
+        foreach ($pesertas as $peserta) {
             $matriksNormalisasi[] = [
-                'matematika' => $data['matematika'] / 100,
-                'fisika' => $data['fisika'] / 100,
-                'kimia' => $data['kimia'] / 100,
-                'biologi' => $data['biologi'] / 100,
+                'matematika' => $peserta->nilai_matematika / 100,
+                'fisika' => $peserta->nilai_fisika / 100,
+                'kimia' => $peserta->nilai_kimia / 100,
+                'biologi' => $peserta->nilai_biologi / 100,
             ];
         }
 
         // Hitung matriks bobot normalisasi
         foreach ($matriksNormalisasi as $data) {
             $matriksBobotNormalisasi[] = [
-                'matematika' => $data['matematika'] * $bobot['matematika'],
-                'fisika' => $data['fisika'] * $bobot['fisika'],
-                'kimia' => $data['kimia'] * $bobot['kimia'],
-                'biologi' => $data['biologi'] * $bobot['biologi'],
+                'matematika' => $data['matematika'] * $osn->bobot_matematika,
+                'fisika' => $data['fisika'] * $osn->bobot_fisika,
+                'kimia' => $data['kimia'] * $osn->bobot_kimia,
+                'biologi' => $data['biologi'] * $osn->bobot_biologi,
             ];
         }
 
@@ -240,26 +191,46 @@ class DataOlimpiadePage extends Component
             $nilaiSAW[] = $totalBobotNormalisasi;
         }
 
-        // Tampilkan hasil perhitungan
-        echo "Hasil Perhitungan SAW:\n";
-        for ($i = 0; $i < count($dataSiswa); $i++) {
-            echo "{$dataSiswa[$i]['nama_siswa']} : {$nilaiSAW[$i]}\n";
-        }
-
         // Simpan nilai SAW ke dalam database (opsional)
         $list_siswa = [];
-        foreach ($dataSiswa as $key => $data) {
-            $list_siswa[] = [
-                'nama_siswa' => $data['nama_siswa'],
-                'matematika' => $data['matematika'],
-                'fisika' => $data['fisika'],
-                'kimia' => $data['kimia'],
-                'biologi' => $data['biologi'],
+        foreach ($pesertas as $key => $data) {
+            $list_siswa[] = collect([
+                'id' => $data->id,
+                'nama_siswa' => $data->data_peserta->nama,
+                'matematika' => $data->nilai_matematika,
+                'fisika' => $data->nilai_fisika,
+                'kimia' => $data->nilai_kimia,
+                'biologi' => $data->nilai_biologi,
                 'nilai_saw' => $nilaiSAW[$key],
-            ];
+            ]);
         }
-        dd($list_siswa);
+        // dd($list_siswa);
 
+        // simpan nilai saw
+        foreach ($list_siswa as $itemPeserta) {
+            $up = OsnPeserta::find($itemPeserta['id']);
+            $up->nilai_saw = $itemPeserta['nilai_saw'];
+            $up->status_lulus = false;
+            $up->save();
+        }
+
+        // ubah status lulus ke true berdasarkan 100 peserta nilai saw teratas
+
+        // Urutkan list_siswa berdasarkan nilai_saw secara descending
+        $list_siswa = collect($list_siswa)->sortByDesc('nilai_saw')->values()->all();
+        // dd($list_siswa);
+        // Ubah status lulus ke true berdasarkan 100 peserta nilai saw teratas
+        $topJumlahLulus = array_slice($list_siswa, 0, $osn->peserta_lulus);
+
+        foreach ($topJumlahLulus as $itemP) {
+            $up = OsnPeserta::find($itemP['id']);
+            $up->status_lulus = true;
+            $up->save();
+        }
+
+
+
+        $this->dispatch('success', pesan: 'berhasil generate peserta yg lulus');
     }
 
 }
