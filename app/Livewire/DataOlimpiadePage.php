@@ -38,6 +38,7 @@ class DataOlimpiadePage extends Component
     public $tgl_tutup;
     public $tgl_pengumuman;
     public $bobot_matematika;
+    public $bobot_rapot;
     public $bobot_fisika;
     public $bobot_kimia;
     public $bobot_biologi;
@@ -52,6 +53,7 @@ class DataOlimpiadePage extends Component
         $osn->tgl_buka = $this->tgl_buka;
         $osn->tgl_tutup = $this->tgl_tutup;
         $osn->tgl_pengumuman = $this->tgl_pengumuman;
+        $osn->bobot_rapot = $this->bobot_rapot;
         $osn->bobot_matematika = $this->bobot_matematika;
         $osn->bobot_fisika = $this->bobot_fisika;
         $osn->bobot_kimia = $this->bobot_kimia;
@@ -75,6 +77,7 @@ class DataOlimpiadePage extends Component
         $this->tgl_buka = $d->tgl_buka;
         $this->tgl_tutup = $d->tgl_tutup;
         $this->tgl_pengumuman = $d->tgl_pengumuman;
+        $this->bobot_rapot = $d->bobot_rapot;
         $this->bobot_matematika = $d->bobot_matematika;
         $this->bobot_fisika = $d->bobot_fisika;
         $this->bobot_kimia = $d->bobot_kimia;
@@ -90,6 +93,7 @@ class DataOlimpiadePage extends Component
         $this->tgl_buka = null;
         $this->tgl_tutup = null;
         $this->tgl_pengumuman = null;
+        $this->bobot_rapot = null;
         $this->bobot_matematika = null;
         $this->bobot_fisika = null;
         $this->bobot_kimia = null;
@@ -105,6 +109,7 @@ class DataOlimpiadePage extends Component
         $osn->tgl_buka = $this->tgl_buka;
         $osn->tgl_tutup = $this->tgl_tutup;
         $osn->tgl_pengumuman = $this->tgl_pengumuman;
+        $osn->bobot_rapot = $this->bobot_rapot;
         $osn->bobot_matematika = $this->bobot_matematika;
         $osn->bobot_fisika = $this->bobot_fisika;
         $osn->bobot_kimia = $this->bobot_kimia;
@@ -167,6 +172,7 @@ class DataOlimpiadePage extends Component
         // Hitung matriks normalisasi
         foreach ($pesertas as $peserta) {
             $matriksNormalisasi[] = [
+                'rapot' => $peserta->nilai_rapot / 100,
                 'matematika' => $peserta->nilai_matematika / 100,
                 'fisika' => $peserta->nilai_fisika / 100,
                 'kimia' => $peserta->nilai_kimia / 100,
@@ -177,6 +183,7 @@ class DataOlimpiadePage extends Component
         // Hitung matriks bobot normalisasi
         foreach ($matriksNormalisasi as $data) {
             $matriksBobotNormalisasi[] = [
+                'rapot' => $data['rapot'] * $osn->bobot_rapot,
                 'matematika' => $data['matematika'] * $osn->bobot_matematika,
                 'fisika' => $data['fisika'] * $osn->bobot_fisika,
                 'kimia' => $data['kimia'] * $osn->bobot_kimia,
@@ -198,6 +205,7 @@ class DataOlimpiadePage extends Component
                 'id' => $data->id,
                 'nama_siswa' => $data->data_peserta->nama,
                 'matematika' => $data->nilai_matematika,
+                'fisika' => $data->nilai_rapot,
                 'fisika' => $data->nilai_fisika,
                 'kimia' => $data->nilai_kimia,
                 'biologi' => $data->nilai_biologi,

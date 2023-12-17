@@ -36,6 +36,11 @@
                                     <input required wire:model='tgl_pengumuman' class="form-control" type="date" id="">
                                 </div>
                                 <div class="mb-1">
+                                    <label for="">bobot rapot</label>
+                                    <input required wire:model='bobot_rapot' class="form-control" type="number"
+                                        min="1" max="5" id="">
+                                </div>
+                                <div class="mb-1">
                                     <label for="">bobot matematika</label>
                                     <input required wire:model='bobot_matematika' class="form-control" type="number"
                                         min="1" max="5" id="">
@@ -104,6 +109,11 @@
                                 <div class="mb-1">
                                     <label for="">tgl pengumuman</label>
                                     <input required wire:model='tgl_pengumuman' class="form-control" type="date" id="">
+                                </div>
+                                <div class="mb-1">
+                                    <label for="">bobot rapot</label>
+                                    <input required wire:model='bobot_rapot' class="form-control" type="number"
+                                        min="1" max="5" id="">
                                 </div>
                                 <div class="mb-1">
                                     <label for="">bobot matematika</label>
@@ -179,6 +189,7 @@
                                         <th>Nama</th>
                                         <th>Tgl lahir</th>
                                         <th>Kelas</th>
+                                        <th>Rapot</th>
                                         <th>Matematika</th>
                                         <th>Fisika</th>
                                         <th>Kimia</th>
@@ -203,6 +214,9 @@
                                             <td>
                                                 {{ $peserta->data_peserta->kelas->nama }} -
                                                 {{ $peserta->data_peserta->subkelas->nama }}
+                                            </td>
+                                            <td>
+                                                {{ $peserta->nilai_rapot }}
                                             </td>
                                             <td>
                                                 {{ $peserta->nilai_matematika }}
@@ -255,6 +269,7 @@
                                     <th>Tgl mulai Pendaftaran</th>
                                     <th>Tgl tutup Pendaftaran</th>
                                     <th>Tgl pengumuman</th>
+                                    <th>bobot rapot</th>
                                     <th>bobot matematika</th>
                                     <th>bobot fisika</th>
                                     <th>bobot kimia</th>
@@ -270,6 +285,7 @@
                                         <td>{{ $data->tgl_buka }}</td>
                                         <td>{{ $data->tgl_tutup }}</td>
                                         <td>{{ $data->tgl_pengumuman }}</td>
+                                        <td>{{ $data->bobot_rapot }}</td>
                                         <td>{{ $data->bobot_matematika }}</td>
                                         <td>{{ $data->bobot_fisika }}</td>
                                         <td>{{ $data->bobot_kimia }}</td>

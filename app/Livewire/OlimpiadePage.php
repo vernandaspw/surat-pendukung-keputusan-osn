@@ -64,6 +64,7 @@ class OlimpiadePage extends Component
     }
 
     public $daftarPage = false;
+    public $nilai_rapot;
     public $nilai_matematika;
     public $nilai_fisika;
     public $nilai_kimia;
@@ -86,6 +87,7 @@ class OlimpiadePage extends Component
         $op->osn_id = $this->osn_id;
         $op->user_id = auth()->user()->id;
         $op->data_peserta_id = auth()->user()->data_peserta->id;
+        $op->nilai_rapot = $this->nilai_rapot;
         $op->nilai_matematika = $this->nilai_matematika;
         $op->nilai_fisika = $this->nilai_fisika;
         $op->nilai_kimia = $this->nilai_kimia;
@@ -99,6 +101,7 @@ class OlimpiadePage extends Component
     public function tutupDaftar()
     {
         $this->daftarPage = false;
+        $this->nilai_rapot = null;
         $this->nilai_matematika = null;
         $this->nilai_fisika = null;
         $this->nilai_kimia = null;
