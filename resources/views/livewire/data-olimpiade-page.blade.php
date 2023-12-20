@@ -35,7 +35,7 @@
                                     <label for="">tgl pengumuman</label>
                                     <input required wire:model='tgl_pengumuman' class="form-control" type="date" id="">
                                 </div>
-                                <div class="mb-1">
+                                {{-- <div class="mb-1">
                                     <label for="">bobot ranking</label>
                                     <input required wire:model='bobot_ranking' class="form-control" type="number"
                                         min="1" max="5" id="">
@@ -68,7 +68,7 @@
                                 <div class="mb-1">
                                     <label for="">Jumlah peserta yg lulus</label>
                                     <input required wire:model='peserta_lulus' class="form-control" type="number" id="">
-                                </div>
+                                </div> --}}
 
                                 <button type="submit" class="form-control btn btn-success">Simpan</button>
                                 <button type="button" class="form-control btn btn-white mt-1 border"
@@ -115,7 +115,7 @@
                                     <label for="">tgl pengumuman</label>
                                     <input required wire:model='tgl_pengumuman' class="form-control" type="date" id="">
                                 </div>
-                                <div class="mb-1">
+                                {{-- <div class="mb-1">
                                     <label for="">bobot ranking</label>
                                     <input required wire:model='bobot_ranking' class="form-control" type="number"
                                         min="1" max="5" id="">
@@ -148,7 +148,7 @@
                                 <div class="mb-1">
                                     <label for="">Jumlah peserta yg lulus</label>
                                     <input required wire:model='peserta_lulus' class="form-control" type="number" id="">
-                                </div>
+                                </div> --}}
 
                                 <button type="submit" class="form-control btn btn-success shadow-sm">Simpan</button>
                                 <button type="button" wire:click='tutupPage'
@@ -175,16 +175,18 @@
                                 {{-- <button class="btn btn-success rounded-pill">Tambah Peserta</button> --}}
                             </div>
                             <div class="">
+                                <button class="btn btn-warning rounded-pill">Tambah peserta</button>
                                 <button
                                 onclick="confirm('Anda yakin generate peserta yang ikut seleksi?') || event.stopImmediatePropagation()"
                                 wire:click="generateLulus()"
                                 class="btn btn-primary rounded-pill">Generate Kelulusan</button>
-                                <button wire:click="$toggle('lulus')" class="btn btn-warning rounded-pill">@if($lulus ==
-                                    true)
-                                    Tampilkan semua
-                                    @else
-                                    Tampilkan yg lulus
-                                    @endif</button>
+                                <select wire:model.live='rekomendasi' class="btn btn-success rounded-pill" id="">
+                                    <option value="semua">semua</option>
+                                    <option value="matematika">matematika</option>
+                                    <option value="fisika">fisika</option>
+                                    <option value="kimia">kimia</option>
+                                    <option value="biologi">biologi</option>
+                                </select>
                                 <button onclick="window.print()" class="btn btn-secondary rounded-pill">Print</button>
                             </div>
                         </div>
@@ -205,9 +207,8 @@
                                         <th>Fisika</th>
                                         <th>Kimia</th>
                                         <th>Biologi</th>
-                                        <th>Nilai SAW</th>
-                                        <th>Status seleksi</th>
-                                        <th>Status Lulus</th>
+                                        <th>Rekomendasi</th>
+
                                     </thead>
                                     <tbody>
                                         @foreach ($data_pesertas as $peserta)
@@ -233,26 +234,22 @@
                                                 {{ $peserta->nilai_rapot }}
                                             </td>
                                             <td>
-                                                {{ $peserta->nilai_matematika }}
+                                                <b>{{ $peserta->nilai_matematika }}</b> ({{ $peserta->nilai_saw_matematika }})
                                             </td>
                                             <td>
-                                                {{ $peserta->nilai_fisika }}
+                                                <b>{{ $peserta->nilai_fisika }}</b> ({{ $peserta->nilai_saw_fisika }})
                                             </td>
                                             <td>
-                                                {{ $peserta->nilai_kimia }}
+                                                <b>{{ $peserta->nilai_kimia }}</b> ({{ $peserta->nilai_saw_kimia }})
                                             </td>
                                             <td>
-                                                {{ $peserta->nilai_biologi }}
+                                                <b>{{ $peserta->nilai_biologi }}</b> ({{ $peserta->nilai_saw_biologi }})
                                             </td>
+
                                             <td>
-                                                {{ $peserta->nilai_saw }}
+                                                {{ $peserta->rekomendasi }}
                                             </td>
-                                            <td>
-                                                <button wire:click="toggleSeleksi('{{ $peserta->id }}')" class="btn {{ $peserta->status_seleksi ? 'btn-success' : 'btn-danger' }} rounded-pill btn-sm">{{ $peserta->status_seleksi ? 'ikuti seleksi' : 'tidak' }}</button>
-                                            </td>
-                                            <td>
-                                                <button wire:click="toggleLulus('{{ $peserta->id }}')" class="btn {{ $peserta->status_lulus ? 'btn-success' : 'btn-danger' }} rounded-pill btn-sm">{{ $peserta->status_lulus ? 'lulus' : 'pending' }}</button>
-                                            </td>
+
                                         </tr>
                                         @endforeach
                                     </tbody>
@@ -283,13 +280,13 @@
                                     <th>Tgl mulai Pendaftaran</th>
                                     <th>Tgl tutup Pendaftaran</th>
                                     <th>Tgl pengumuman</th>
-                                    <th>bobot ranking</th>
+                                    {{-- <th>bobot ranking</th>
                                     <th>bobot rapot</th>
                                     <th>bobot matematika</th>
                                     <th>bobot fisika</th>
                                     <th>bobot kimia</th>
                                     <th>bobot biologi</th>
-                                    <th>Jml yg lulus</th>
+                                    <th>Jml yg lulus</th> --}}
                                     <th>Status</th>
                                     <th>Peserta saat ini</th>
                                 </thead>
@@ -300,13 +297,13 @@
                                         <td>{{ $data->tgl_buka }}</td>
                                         <td>{{ $data->tgl_tutup }}</td>
                                         <td>{{ $data->tgl_pengumuman }}</td>
-                                        <td>{{ $data->bobot_ranking }}</td>
+                                        {{-- <td>{{ $data->bobot_ranking }}</td>
                                         <td>{{ $data->bobot_rapot }}</td>
                                         <td>{{ $data->bobot_matematika }}</td>
                                         <td>{{ $data->bobot_fisika }}</td>
                                         <td>{{ $data->bobot_kimia }}</td>
                                         <td>{{ $data->bobot_biologi }}</td>
-                                        <td>{{ $data->peserta_lulus }}</td>
+                                        <td>{{ $data->peserta_lulus }}</td> --}}
                                         <td>{{ $data->isaktif ? 'Buka' : 'tutup'}}</td>
                                         <td>
                                             {{ $data->pesertas->count() }}

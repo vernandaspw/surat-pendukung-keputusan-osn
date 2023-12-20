@@ -78,9 +78,7 @@
                         <div class="">
                             Tanggal pengumuman : {{ $osn->tgl_pengumuman }}
                         </div>
-                        <div class="">
-                            Peserta yg diterima : {{ $osn->peserta_lulus }}
-                        </div>
+
                     </div>
                     <div class="mt-2 mb-2">
                         {{ $osn->keterangan }}
@@ -100,12 +98,13 @@
                     btn-success text-white
                     @else
                     btn-white border
-                    @endif form-control">Peserta yang lulus</button>
+                    @endif form-control">Peserta yang telah direkomendasi</button>
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover">
                             <thead class="bg-success text-white">
+                                <th>No</th>
                                 <th>
                                     NIK / NIS
                                 </th>
@@ -116,12 +115,13 @@
                                     Tanggal lahir
                                 </th>
                                 <th>
-                                    Status Lulus
+                                    Rekomendasi
                                 </th>
                             </thead>
                             <tbody>
                                 @foreach ($pesertas as $peserta)
                                 <tr>
+                                    <td>{{ $loop->iteration }}</td>
                                     <td>
                                         {{ $peserta->data_peserta->nik }}
                                     </td>
@@ -132,8 +132,7 @@
                                         {{ $peserta->data_peserta->tgl_lahir }}
                                     </td>
                                     <td>
-                                        <span class="{{ $peserta->status_lulus ? 'text-success' : '' }}">{{
-                                            $peserta->status_lulus ? 'Lulus' : '-' }}</span>
+                                       {{ $peserta->rekomendasi }}
                                     </td>
                                 </tr>
                                 @endforeach
@@ -188,9 +187,7 @@
                             <div class="">
                                 Tanggal pengumuman : {{ $osn->tgl_pengumuman }}
                             </div>
-                            <div class="">
-                                Peserta yg diterima : {{ $osn->peserta_lulus }}
-                            </div>
+
                         </div>
                         <div class="mt-2 mb-2">
                             {{ $osn->keterangan }}

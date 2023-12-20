@@ -22,9 +22,13 @@ return new class extends Migration
             $table->tinyInteger('nilai_fisika')->default(0);
             $table->tinyInteger('nilai_kimia')->default(0);
             $table->tinyInteger('nilai_biologi')->default(0);
-            $table->decimal('nilai_saw', 5)->default(0);
-            $table->boolean('status_seleksi')->default(true);
-            $table->boolean('status_lulus')->default(false);
+            $table->decimal('nilai_saw_matematika', 5)->default(0);
+            $table->decimal('nilai_saw_fisika', 5)->default(0);
+            $table->decimal('nilai_saw_kimia', 5)->default(0);
+            $table->decimal('nilai_saw_biologi', 5)->default(0);
+            $table->string('rekomendasi', 15)->nullable();
+            // $table->boolean('status_seleksi')->default(true);
+            // $table->boolean('status_lulus')->default(false);
             $table->timestamps();
         });
     }

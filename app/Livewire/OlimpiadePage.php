@@ -28,7 +28,7 @@ class OlimpiadePage extends Component
             $this->osn = Osn::find($this->osn_id);
             $peserta = OsnPeserta::where('osn_id', $this->osn_id)->latest();
             if ($this->pesertaPage == 2) {
-                $peserta->where('status_lulus', true);
+                $peserta->where('rekomendasi', '!=', null);
             }
             $this->pesertas = $peserta->get();
         }
