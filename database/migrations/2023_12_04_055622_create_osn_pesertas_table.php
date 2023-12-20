@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('osn_id')->constrained('osns')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('data_peserta_id')->constrained('data_pesertas')->onUpdate('cascade')->onDelete('cascade');
+            $table->tinyInteger('nilai_ranking')->default(0);
             $table->tinyInteger('nilai_rapot')->default(0);
             $table->tinyInteger('nilai_matematika')->default(0);
             $table->tinyInteger('nilai_fisika')->default(0);

@@ -28,6 +28,10 @@
                     <form wire:submit="daftar">
                         <h5>Masukan Nilai Dibawah ini</h5>
                         <div class="mb-1">
+                            <label for="">Ranking</label>
+                            <input type="number" wire:model='nilai_ranking' max="100" min="0" id="" class="form-control">
+                        </div>
+                        <div class="mb-1">
                             <label for="">Nilai Rapot</label>
                             <input type="number" wire:model='nilai_rapot' max="100" min="0" id="" class="form-control">
                         </div>

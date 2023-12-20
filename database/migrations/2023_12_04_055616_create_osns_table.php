@@ -18,6 +18,7 @@ return new class extends Migration
             $table->date('tgl_buka');
             $table->date('tgl_tutup');
             $table->date('tgl_pengumuman');
+            $table->tinyInteger('bobot_ranking')->default(1);
             $table->tinyInteger('bobot_rapot')->default(1);
             $table->tinyInteger('bobot_matematika')->default(1);
             $table->tinyInteger('bobot_fisika')->default(1);
