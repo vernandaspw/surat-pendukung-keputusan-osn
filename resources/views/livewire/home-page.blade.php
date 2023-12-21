@@ -19,11 +19,11 @@
                                     @else
                                     btn-white border
                                     @endif form-control  rounded-none">Masuk</button>
-                                    <button type="button" wire:click="$set('isLogin', false)" class="btn @if(!$isLogin)
+                                    {{-- <button type="button" wire:click="$set('isLogin', false)" class="btn @if(!$isLogin)
                                     btn-success active
                                     @else
                                     btn-white border
-                                    @endif form-control rounded-none">Daftar Peserta</button>
+                                    @endif form-control rounded-none">Daftar Peserta</button> --}}
                                 </div>
                                 @if($isLogin)
                                 <form wire:submit='masuk'>
