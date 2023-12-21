@@ -7,7 +7,9 @@ use App\Models\Kelas;
 use App\Models\Osn;
 use App\Models\OsnPeserta;
 use App\Models\SubKelas;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 
 class DataOlimpiadePage extends Component
@@ -42,8 +44,8 @@ class DataOlimpiadePage extends Component
 
         $this->kelass = Kelas::get();
 
-        if ($this->kelas_id) {
-            $this->sub_kelass = SubKelas::where('kelas_id', $this->kelas_id)->get();
+        if ($this->c_kelas_id) {
+            $this->sub_kelass = SubKelas::where('kelas_id', $this->c_kelas_id)->get();
         }
 
         $this->pesertas = DataPeserta::latest()->get();
@@ -173,8 +175,9 @@ class DataOlimpiadePage extends Component
     public $c_nik;
     public $c_nama;
     public $c_tgl_lahir;
+    public $c_kelas_id;
     public $sub_kelas_id;
-    public $c_alamat;
+
     public $c_telp;
     public $c_nilai_ranking;
     public $c_nilai_rapot;
@@ -183,58 +186,76 @@ class DataOlimpiadePage extends Component
     public $c_nilai_kimia;
     public $c_nilai_biologi;
 
+    function tutupPesertaBaru() {
+        $this->tambahPeserta = false;
+        $this->c_peserta_id = null;
+        $this->c_nik = null;
+        $this->c_nama = null;
+        $this->c_tgl_lahir = null;
+        $this->c_kelas_id = null;
+        $this->sub_kelas_id = null;
+
+        $this->c_telp = null;
+        $this->c_nilai_ranking = null;
+        $this->c_nilai_rapot = null;
+        $this->c_nilai_matematika = null;
+        $this->c_nilai_fisika = null;
+        $this->c_nilai_kimia = null;
+        $this->c_nilai_biologi = null;
+    }
+
     public function pesertaBaru()
     {
-        $osn_id = $this->editID;
+
         try {
             DB::beginTransaction();
-            if ($this->tipe_peserta == 1) {
-                // dari data peserta
-                $cek = OsnPeserta::where('osn_id', $this->osn_id)->where('user_id', auth()->user()->id)->first();
-                if ($cek) {
-                    return $this->dispatch('error', pesan: 'Sudah pernah daftar');
-                }
 
-            } else {
-                // buat peserta
-                // buat akun
-                $user = new User();
-                $user->username = $this->nik;
-                $user->password = Hash::make($this->password);
-                $user->role = 'peserta';
-                $user->isaktif = $this->isaktif;
-                $user->save();
-
-                // buat data peserta
-                $dp = new DataPeserta();
-                $dp->nik = $this->nik;
-                $dp->user_id = $user->id;
-                $dp->nama = $this->nama;
-                $dp->tgl_lahir = $this->tgl_lahir;
-                $dp->bio = $this->bio;
-                $dp->kelas_id = $this->kelas_id;
-                $dp->sub_kelas_id = $this->sub_kelas_id;
-                $dp->alamat = $this->alamat;
-                $dp->telp = $this->telp;
-                $dp->isaktif = $this->isaktif;
-                $dp->save();
-
-                $op = new OsnPeserta();
-                $op->osn_id = $osn_id;
-                $op->user_id = $user->id;
-                $op->data_peserta_id = $dp->id;
-                $op->nilai_ranking = $this->nilai_ranking;
-                $op->nilai_rapot = $this->nilai_rapot;
-                $op->nilai_matematika = $this->nilai_matematika;
-                $op->nilai_fisika = $this->nilai_fisika;
-                $op->nilai_kimia = $this->nilai_kimia;
-                $op->nilai_biologi = $this->nilai_biologi;
-                $op->save();
-
+            $cek = OsnPeserta::where('osn_id', $this->editID)->whereRelation('data_peserta', 'nik', $this->c_nik)->first();
+            if ($cek) {
+                return $this->dispatch('error', pesan: 'Sudah pernah daftar');
             }
+            // buat peserta
+            // buat akun
+            $user = new User();
+            $user->username = $this->c_nik;
+            $user->password = Hash::make($this->c_tgl_lahir);
+            $user->role = 'peserta';
+            $user->isaktif = true;
+            $user->save();
+
+            $dpeserta = DataPeserta::where('nik', $this->c_nik)->first();
+            if (!$dpeserta) {
+// buat data peserta
+                $dp = new DataPeserta();
+                $dp->nik = $this->c_nik;
+                $dp->user_id = $user->id;
+                $dp->nama = $this->c_nama;
+                $dp->tgl_lahir = $this->c_tgl_lahir;
+                $dp->kelas_id = $this->c_kelas_id;
+                $dp->sub_kelas_id = $this->sub_kelas_id;
+
+                $dp->telp = $this->c_telp;
+                $dp->isaktif = true;
+                $dp->save();
+            } else {
+                $dp = $dpeserta;
+            }
+
+            $op = new OsnPeserta();
+            $op->osn_id = $this->editID;
+            $op->user_id = $user->id;
+            $op->data_peserta_id = $dp->id;
+            $op->nilai_ranking = $this->c_nilai_ranking;
+            $op->nilai_rapot = $this->c_nilai_rapot;
+            $op->nilai_matematika = $this->c_nilai_matematika;
+            $op->nilai_fisika = $this->c_nilai_fisika;
+            $op->nilai_kimia = $this->c_nilai_kimia;
+            $op->nilai_biologi = $this->c_nilai_biologi;
+            $op->save();
 
             DB::commit();
             $this->dispatch('success', pesan: 'berhasil tambah data');
+            $this->tutupPesertaBaru();
         } catch (\Throwable $e) {
             DB::rollBack();
             dd($e);

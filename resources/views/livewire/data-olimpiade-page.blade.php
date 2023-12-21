@@ -161,30 +161,14 @@
             @if($tambahPeserta)
             <div class="col-md-4 d-print-none">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header bg-success text-white">
                         Tambaha peserta baru
                     </div>
                     <div class="card-body">
                         <div class="">
-                            <div class="mb-1">
-                                <label for="">Pilih</label>
-                                <select class="form-control" wire:model.live='tipe_peserta' id="">
-                                    <option value="1">Dari data peserta</option>
-                                    <option value="2">Peserta baru</option>
-                                </select>
-                            </div>
-                            <form wire:submit="daftar">
-                                @if($tipe_peserta == 1)
-                                <div class="mb-1">
-                                    <label for="">Pilih Peserta</label>
-                                    <select class="form-control" required wire:model.live='c_peserta_id' id="">
-                                        <option value="">Pilih</option>
-                                        @foreach($pesertas as $peserta)
-                                        <option value="{{ $peserta->id }}">{{ $peserta->nik }} - {{ $peserta->nama }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                @else
+
+                            <form wire:submit="pesertaBaru">
+
                                 <div class="mb-1">
                                     <label for="">nik / nis</label>
                                     <input class="form-control" required wire:model='c_nik' type="number">
@@ -199,7 +183,7 @@
                                 </div>
                                 <div class="mb-1">
                                     <label for="">Kelas</label>
-                                    <select class="form-control" required wire:model.live='kelas_id' id="">
+                                    <select class="form-control" required wire:model.live='c_kelas_id' id="">
                                         <option value="">Pilih</option>
                                         @foreach($kelass as $kelas)
                                         <option value="{{ $kelas->id }}">{{ $kelas->nama }}</option>
@@ -215,16 +199,13 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="mb-1">
-                                    <label for="">alamat</label>
-                                    <input class="form-control" wire:model='c_alamat' type="text">
-                                </div>
+
                                 <div class="mb-1">
                                     <label for="">telp</label>
                                     <input class="form-control" wire:model='c_telp' type="number" maxlength="15">
                                 </div>
 
-                                @endif
+
                                 <h5>Masukan Nilai Dibawah ini</h5>
                                 <div class="mb-1">
                                     <label for="">Ranking</label>
@@ -259,7 +240,7 @@
                                 <button type="submit" class="btn btn-success form-control">
                                     Simpan
                                 </button>
-                                <button type="button" wire:click="$set('createPage', false)"
+                                <button type="button" wire:click="tutupPesertaBaru()"
                                     class="btn btn-white mt-1 form-control">
                                     Batal
                                 </button>
