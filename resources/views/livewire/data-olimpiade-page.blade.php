@@ -177,7 +177,7 @@
                                 @if($tipe_peserta == 1)
                                 <div class="mb-1">
                                     <label for="">Pilih Peserta</label>
-                                    <select class="form-control" required wire:model.live='peserta_id' id="">
+                                    <select class="form-control" required wire:model.live='c_peserta_id' id="">
                                         <option value="">Pilih</option>
                                         @foreach($pesertas as $peserta)
                                         <option value="{{ $peserta->id }}">{{ $peserta->nik }} - {{ $peserta->nama }}</option>
@@ -187,15 +187,15 @@
                                 @else
                                 <div class="mb-1">
                                     <label for="">nik / nis</label>
-                                    <input class="form-control" required wire:model='nik' type="number">
+                                    <input class="form-control" required wire:model='c_nik' type="number">
                                 </div>
                                 <div class="mb-1">
                                     <label for="">nama</label>
-                                    <input class="form-control" required wire:model='nama' type="text">
+                                    <input class="form-control" required wire:model='c_nama' type="text">
                                 </div>
                                 <div class="mb-1">
                                     <label for="">Tanggal lahir</label>
-                                    <input class="form-control" required wire:model='tgl_lahir' type="date">
+                                    <input class="form-control" required wire:model='c_tgl_lahir' type="date">
                                 </div>
                                 <div class="mb-1">
                                     <label for="">Kelas</label>
@@ -217,43 +217,43 @@
                                 </div>
                                 <div class="mb-1">
                                     <label for="">alamat</label>
-                                    <input class="form-control" wire:model='alamat' type="text">
+                                    <input class="form-control" wire:model='c_alamat' type="text">
                                 </div>
                                 <div class="mb-1">
                                     <label for="">telp</label>
-                                    <input class="form-control" wire:model='telp' type="number" maxlength="15">
+                                    <input class="form-control" wire:model='c_telp' type="number" maxlength="15">
                                 </div>
 
                                 @endif
                                 <h5>Masukan Nilai Dibawah ini</h5>
                                 <div class="mb-1">
                                     <label for="">Ranking</label>
-                                    <input type="number" wire:model='nilai_ranking' max="100" min="0" id=""
+                                    <input type="number" wire:model='c_nilai_ranking' max="100" min="0" id=""
                                         class="form-control">
                                 </div>
                                 <div class="mb-1">
                                     <label for="">Nilai Rapot</label>
-                                    <input type="number" wire:model='nilai_rapot' max="100" min="0" id=""
+                                    <input type="number" wire:model='c_nilai_rapot' max="100" min="0" id=""
                                         class="form-control">
                                 </div>
                                 <div class="mb-1">
                                     <label for="">Nilai Matematika (0-100)</label>
-                                    <input type="number" wire:model='nilai_matematika' max="100" min="0" id=""
+                                    <input type="number" wire:model='c_nilai_matematika' max="100" min="0" id=""
                                         class="form-control">
                                 </div>
                                 <div class="mb-1">
                                     <label for="">Nilai fisika (0-100)</label>
-                                    <input type="number" wire:model='nilai_fisika' max="100" min="0" id=""
+                                    <input type="number" wire:model='c_nilai_fisika' max="100" min="0" id=""
                                         class="form-control">
                                 </div>
                                 <div class="mb-1">
                                     <label for="">Nilai kimia (0-100)</label>
-                                    <input type="number" wire:model='nilai_kimia' max="100" min="0" id=""
+                                    <input type="number" wire:model='c_nilai_kimia' max="100" min="0" id=""
                                         class="form-control">
                                 </div>
                                 <div class="mb-1">
                                     <label for="">Nilai biologi (0-100)</label>
-                                    <input type="number" wire:model='nilai_biologi' max="100" min="0" id=""
+                                    <input type="number" wire:model='c_nilai_biologi' max="100" min="0" id=""
                                         class="form-control">
                                 </div>
                                 <button type="submit" class="btn btn-success form-control">

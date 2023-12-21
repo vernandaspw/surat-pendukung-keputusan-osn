@@ -7,6 +7,7 @@ use App\Models\Kelas;
 use App\Models\Osn;
 use App\Models\OsnPeserta;
 use App\Models\SubKelas;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class DataOlimpiadePage extends Component
@@ -23,20 +24,16 @@ class DataOlimpiadePage extends Component
             if ($this->rekomendasi == 'matematika') {
                 $peserta->where('rekomendasi', $this->rekomendasi);
                 $this->data_pesertas = $peserta->orderBy('nilai_saw_matematika', 'desc')->get();
-            }
-            else if ($this->rekomendasi == 'fisika') {
+            } else if ($this->rekomendasi == 'fisika') {
                 $peserta->where('rekomendasi', $this->rekomendasi);
                 $this->data_pesertas = $peserta->orderBy('nilai_saw_fisika', 'desc')->get();
-            }
-            else if ($this->rekomendasi == 'kimia') {
+            } else if ($this->rekomendasi == 'kimia') {
                 $peserta->where('rekomendasi', $this->rekomendasi);
                 $this->data_pesertas = $peserta->orderBy('nilai_saw_kimia', 'desc')->get();
-            }
-            else if ($this->rekomendasi == 'biologi') {
+            } else if ($this->rekomendasi == 'biologi') {
                 $peserta->where('rekomendasi', $this->rekomendasi);
                 $this->data_pesertas = $peserta->orderBy('nilai_saw_biologi', 'desc')->get();
-            }
-            else{
+            } else {
                 $this->data_pesertas = $peserta->get();
             }
         }
@@ -172,8 +169,76 @@ class DataOlimpiadePage extends Component
     public $lulus = false;
     public $tipe_peserta = 1;
 
+    public $c_peserta_id;
+    public $c_nik;
+    public $c_nama;
+    public $c_tgl_lahir;
+    public $sub_kelas_id;
+    public $c_alamat;
+    public $c_telp;
+    public $c_nilai_ranking;
+    public $c_nilai_rapot;
+    public $c_nilai_matematika;
+    public $c_nilai_fisika;
+    public $c_nilai_kimia;
+    public $c_nilai_biologi;
+
     public function pesertaBaru()
     {
+        $osn_id = $this->editID;
+        try {
+            DB::beginTransaction();
+            if ($this->tipe_peserta == 1) {
+                // dari data peserta
+                $cek = OsnPeserta::where('osn_id', $this->osn_id)->where('user_id', auth()->user()->id)->first();
+                if ($cek) {
+                    return $this->dispatch('error', pesan: 'Sudah pernah daftar');
+                }
+
+            } else {
+                // buat peserta
+                // buat akun
+                $user = new User();
+                $user->username = $this->nik;
+                $user->password = Hash::make($this->password);
+                $user->role = 'peserta';
+                $user->isaktif = $this->isaktif;
+                $user->save();
+
+                // buat data peserta
+                $dp = new DataPeserta();
+                $dp->nik = $this->nik;
+                $dp->user_id = $user->id;
+                $dp->nama = $this->nama;
+                $dp->tgl_lahir = $this->tgl_lahir;
+                $dp->bio = $this->bio;
+                $dp->kelas_id = $this->kelas_id;
+                $dp->sub_kelas_id = $this->sub_kelas_id;
+                $dp->alamat = $this->alamat;
+                $dp->telp = $this->telp;
+                $dp->isaktif = $this->isaktif;
+                $dp->save();
+
+                $op = new OsnPeserta();
+                $op->osn_id = $osn_id;
+                $op->user_id = $user->id;
+                $op->data_peserta_id = $dp->id;
+                $op->nilai_ranking = $this->nilai_ranking;
+                $op->nilai_rapot = $this->nilai_rapot;
+                $op->nilai_matematika = $this->nilai_matematika;
+                $op->nilai_fisika = $this->nilai_fisika;
+                $op->nilai_kimia = $this->nilai_kimia;
+                $op->nilai_biologi = $this->nilai_biologi;
+                $op->save();
+
+            }
+
+            DB::commit();
+            $this->dispatch('success', pesan: 'berhasil tambah data');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            dd($e);
+        }
 
     }
 
@@ -281,7 +346,7 @@ class DataOlimpiadePage extends Component
             $nilaiMapel = array(
                 'matematika' => $itemPeserta['nilai_saw_matematika'],
                 'fisika' => $itemPeserta['nilai_saw_fisika'],
-                'kimia' =>  $itemPeserta['nilai_saw_kimia'],
+                'kimia' => $itemPeserta['nilai_saw_kimia'],
                 'biologi' => $itemPeserta['nilai_saw_biologi'],
             );
             // Menentukan nilai terbesar
@@ -303,6 +368,5 @@ class DataOlimpiadePage extends Component
 
         $this->dispatch('success', pesan: 'berhasil generate peserta yg lulus');
     }
-
 
 }
