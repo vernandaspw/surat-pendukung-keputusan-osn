@@ -42,8 +42,8 @@
                                 </div>
                                 <div class="mb-1">
                                     <label for="">bobot rapot</label>
-                                    <input required wire:model='bobot_rapot' class="form-control" type="number"
-                                        min="1" max="5" id="">
+                                    <input required wire:model='bobot_rapot' class="form-control" type="number" min="1"
+                                        max="5" id="">
                                 </div>
                                 <div class="mb-1">
                                     <label for="">bobot matematika</label>
@@ -122,8 +122,8 @@
                                 </div>
                                 <div class="mb-1">
                                     <label for="">bobot rapot</label>
-                                    <input required wire:model='bobot_rapot' class="form-control" type="number"
-                                        min="1" max="5" id="">
+                                    <input required wire:model='bobot_rapot' class="form-control" type="number" min="1"
+                                        max="5" id="">
                                 </div>
                                 <div class="mb-1">
                                     <label for="">bobot matematika</label>
@@ -159,11 +159,118 @@
                 </div>
             </div>
             @if($tambahPeserta)
+            <div class="col-md-4 d-print-none">
+                <div class="card">
+                    <div class="card-header">
+                        Tambaha peserta baru
+                    </div>
+                    <div class="card-body">
+                        <div class="">
+                            <div class="mb-1">
+                                <label for="">Pilih</label>
+                                <select class="form-control" wire:model.live='tipe_peserta' id="">
+                                    <option value="1">Dari data peserta</option>
+                                    <option value="2">Peserta baru</option>
+                                </select>
+                            </div>
+                            <form wire:submit="daftar">
+                                @if($tipe_peserta == 1)
+                                <div class="mb-1">
+                                    <label for="">Pilih Peserta</label>
+                                    <select class="form-control" required wire:model.live='peserta_id' id="">
+                                        <option value="">Pilih</option>
+                                        @foreach($pesertas as $peserta)
+                                        <option value="{{ $peserta->id }}">{{ $peserta->nik }} - {{ $peserta->nama }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                @else
+                                <div class="mb-1">
+                                    <label for="">nik / nis</label>
+                                    <input class="form-control" required wire:model='nik' type="number">
+                                </div>
+                                <div class="mb-1">
+                                    <label for="">nama</label>
+                                    <input class="form-control" required wire:model='nama' type="text">
+                                </div>
+                                <div class="mb-1">
+                                    <label for="">Tanggal lahir</label>
+                                    <input class="form-control" required wire:model='tgl_lahir' type="date">
+                                </div>
+                                <div class="mb-1">
+                                    <label for="">Kelas</label>
+                                    <select class="form-control" required wire:model.live='kelas_id' id="">
+                                        <option value="">Pilih</option>
+                                        @foreach($kelass as $kelas)
+                                        <option value="{{ $kelas->id }}">{{ $kelas->nama }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="mb-1">
+                                    <label for="">Sub Kelas</label>
+                                    <select class="form-control" required wire:model.live='sub_kelas_id' id="">
+                                        <option value="">Pilih</option>
+                                        @foreach($sub_kelass as $sub_kelas)
+                                        <option value="{{ $sub_kelas->id }}">{{ $sub_kelas->nama }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="mb-1">
+                                    <label for="">alamat</label>
+                                    <input class="form-control" wire:model='alamat' type="text">
+                                </div>
+                                <div class="mb-1">
+                                    <label for="">telp</label>
+                                    <input class="form-control" wire:model='telp' type="number" maxlength="15">
+                                </div>
 
+                                @endif
+                                <h5>Masukan Nilai Dibawah ini</h5>
+                                <div class="mb-1">
+                                    <label for="">Ranking</label>
+                                    <input type="number" wire:model='nilai_ranking' max="100" min="0" id=""
+                                        class="form-control">
+                                </div>
+                                <div class="mb-1">
+                                    <label for="">Nilai Rapot</label>
+                                    <input type="number" wire:model='nilai_rapot' max="100" min="0" id=""
+                                        class="form-control">
+                                </div>
+                                <div class="mb-1">
+                                    <label for="">Nilai Matematika (0-100)</label>
+                                    <input type="number" wire:model='nilai_matematika' max="100" min="0" id=""
+                                        class="form-control">
+                                </div>
+                                <div class="mb-1">
+                                    <label for="">Nilai fisika (0-100)</label>
+                                    <input type="number" wire:model='nilai_fisika' max="100" min="0" id=""
+                                        class="form-control">
+                                </div>
+                                <div class="mb-1">
+                                    <label for="">Nilai kimia (0-100)</label>
+                                    <input type="number" wire:model='nilai_kimia' max="100" min="0" id=""
+                                        class="form-control">
+                                </div>
+                                <div class="mb-1">
+                                    <label for="">Nilai biologi (0-100)</label>
+                                    <input type="number" wire:model='nilai_biologi' max="100" min="0" id=""
+                                        class="form-control">
+                                </div>
+                                <button type="submit" class="btn btn-success form-control">
+                                    Simpan
+                                </button>
+                                <button type="button" wire:click="$set('createPage', false)"
+                                    class="btn btn-white mt-1 form-control">
+                                    Batal
+                                </button>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
             @endif
             @if(!$tambahPeserta && !$peserta_id)
-
-            @endif
             <div class="col d-print-table">
                 <div class="card">
                     <div class="card-header d-print-none">
@@ -175,11 +282,12 @@
                                 {{-- <button class="btn btn-success rounded-pill">Tambah Peserta</button> --}}
                             </div>
                             <div class="">
-                                <button class="btn btn-warning rounded-pill">Tambah peserta</button>
+                                <button wire:click="$set('tambahPeserta', true)"
+                                    class="btn btn-warning rounded-pill">Tambah peserta</button>
                                 <button
-                                onclick="confirm('Anda yakin generate peserta yang ikut seleksi?') || event.stopImmediatePropagation()"
-                                wire:click="generateLulus()"
-                                class="btn btn-primary rounded-pill">Generate Kelulusan</button>
+                                    onclick="confirm('Anda yakin generate peserta yang ikut seleksi?') || event.stopImmediatePropagation()"
+                                    wire:click="generateLulus()" class="btn btn-primary rounded-pill">Generate
+                                    Kelulusan</button>
                                 <select wire:model.live='rekomendasi' class="btn btn-success rounded-pill" id="">
                                     <option value="semua">semua</option>
                                     <option value="matematika">matematika</option>
@@ -234,7 +342,8 @@
                                                 {{ $peserta->nilai_rapot }}
                                             </td>
                                             <td>
-                                                <b>{{ $peserta->nilai_matematika }}</b> ({{ $peserta->nilai_saw_matematika }})
+                                                <b>{{ $peserta->nilai_matematika }}</b> ({{
+                                                $peserta->nilai_saw_matematika }})
                                             </td>
                                             <td>
                                                 <b>{{ $peserta->nilai_fisika }}</b> ({{ $peserta->nilai_saw_fisika }})
@@ -259,6 +368,8 @@
                     </div>
                 </div>
             </div>
+            @endif
+
             @endif
             @if(!$createPage && !$editID)
             <div class="col-md-12">

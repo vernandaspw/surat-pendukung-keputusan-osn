@@ -2,8 +2,11 @@
 
 namespace App\Livewire;
 
+use App\Models\DataPeserta;
+use App\Models\Kelas;
 use App\Models\Osn;
 use App\Models\OsnPeserta;
+use App\Models\SubKelas;
 use Livewire\Component;
 
 class DataOlimpiadePage extends Component
@@ -39,8 +42,21 @@ class DataOlimpiadePage extends Component
         }
 
         $this->datas = $data->get();
+
+        $this->kelass = Kelas::get();
+
+        if ($this->kelas_id) {
+            $this->sub_kelass = SubKelas::where('kelas_id', $this->kelas_id)->get();
+        }
+
+        $this->pesertas = DataPeserta::latest()->get();
         return view('livewire.data-olimpiade-page');
     }
+
+    public $kelas_id;
+    public $pesertas = [];
+    public $kelass = [];
+    public $sub_kelass = [];
 
     public $datas = [];
     public $data_osn = [];
@@ -154,6 +170,7 @@ class DataOlimpiadePage extends Component
     public $tambahPeserta = false;
     public $peserta_id;
     public $lulus = false;
+    public $tipe_peserta = 1;
 
     public function pesertaBaru()
     {
@@ -286,5 +303,6 @@ class DataOlimpiadePage extends Component
 
         $this->dispatch('success', pesan: 'berhasil generate peserta yg lulus');
     }
+
 
 }

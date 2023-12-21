@@ -110,4 +110,6 @@ class OlimpiadePage extends Component
         $this->nilai_kimia = null;
         $this->nilai_biologi = null;
     }
+
+    
 }
