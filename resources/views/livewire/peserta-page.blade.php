@@ -182,7 +182,7 @@
 
                                     <tr>
                                         <td>{{ $data->user->username }}</td>
-                                        <td></td>
+                                        {{-- <td></td> --}}
                                         <td>{{ $data->nik }}</td>
                                         <td>{{ $data->nama }}</td>
                                         <td>{{ $data->tgl_lahir }}</td>
