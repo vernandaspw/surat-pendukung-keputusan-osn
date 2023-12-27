@@ -174,7 +174,7 @@
                                     <th>subkelas</th>
                                     <th>alamat</th>
                                     <th>telp</th>
-                                    <th>isaktif</th>
+                                    {{-- <th>isaktif</th> --}}
                                     <th></th>
                                 </thead>
                                 <tbody>
@@ -190,7 +190,7 @@
                                         <td>{{ $data->subkelas ? $data->subkelas->nama : '-' }}</td>
                                         <td>{{ $data->alamat }}</td>
                                         <td>{{ $data->telp }}</td>
-                                        <td>{{ $data->isaktif == 1? 'Aktif' : 'Tidak aktif'}}</td>
+                                        {{-- <td>{{ $data->isaktif == 1? 'Aktif' : 'Tidak aktif'}}</td> --}}
                                         <td>
                                             <button class="btn btn-warning" wire:click="ubahPage('{{ $data->id }}')">
                                                 Edit
