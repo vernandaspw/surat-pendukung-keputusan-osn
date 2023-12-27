@@ -56,13 +56,13 @@
                                     <label for="">telp</label>
                                     <input class="form-control" wire:model='telp' type="number" maxlength="15">
                                 </div>
-                                <div class="mb-1">
+                                {{-- <div class="mb-1">
                                     <label for="">status akun</label>
                                     <select class="form-control" wire:model='isaktif' id="">
                                         <option value="1">Aktif</option>
                                         <option value="0">Tidak Aktif</option>
                                     </select>
-                                </div>
+                                </div> --}}
                                 <button type="submit" class="btn btn-success form-control">
                                     Simpan
                                 </button>
@@ -133,13 +133,13 @@
                                     <label for="">telp</label>
                                     <input class="form-control" wire:model='telp' type="number" maxlength="15">
                                 </div>
-                                <div class="mb-1">
+                                {{-- <div class="mb-1">
                                     <label for="">status akun</label>
                                     <select class="form-control" wire:model='isaktif' id="">
                                         <option value="1">Aktif</option>
                                         <option value="0">Tidak Aktif</option>
                                     </select>
-                                </div>
+                                </div> --}}
                                 <button type="submit" class="btn btn-success form-control">
                                     Simpan
                                 </button>
