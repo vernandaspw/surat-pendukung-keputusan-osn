@@ -288,7 +288,7 @@ class DataOlimpiadePage extends Component
     public function generateLulus()
     {
         $osn = Osn::find($this->editID);
-        $pesertas = OsnPeserta::where('osn_id', $this->editID)->where('status_seleksi', true)->get();
+        $pesertas = OsnPeserta::where('osn_id', $this->editID)->get();
 
         // Inisialisasi matriks normalisasi dan matriks bobot normalisasi
         $matriksNormalisasi = [];
