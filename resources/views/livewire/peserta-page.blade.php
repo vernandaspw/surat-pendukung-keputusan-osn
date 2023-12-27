@@ -18,10 +18,10 @@
                                     <label for="">nik / nis</label>
                                     <input class="form-control" required wire:model='nik' type="number">
                                 </div>
-                                <div class="mb-1">
+                                {{-- <div class="mb-1">
                                     <label for="">Password</label>
                                     <input class="form-control" required wire:model='password' type="text">
-                                </div>
+                                </div> --}}
                                 <div class="mb-1">
                                     <label for="">nama</label>
                                     <input class="form-control" required wire:model='nama' type="text">
@@ -94,10 +94,10 @@
                                     <label for="">Username</label>
                                     <input class="form-control" required wire:model='username' maxlength="20" type="text">
                                 </div>
-                                <div class="mb-1">
+                                {{-- <div class="mb-1">
                                     <label for="">Password</label>
                                     <input class="form-control"  wire:model='password' type="text">
-                                </div>
+                                </div> --}}
                                 <div class="mb-1">
                                     <label for="">nama</label>
                                     <input class="form-control" required wire:model='nama' type="text">
@@ -166,7 +166,7 @@
                             <table class="table  table-bordered">
                                 <thead class="bg-success">
                                     <th>username</th>
-                                    <th>password</th>
+                                    {{-- <th>password</th> --}}
                                     <th>nik / nis</th>
                                     <th>nama</th>
                                     <th>tgl_lahir</th>

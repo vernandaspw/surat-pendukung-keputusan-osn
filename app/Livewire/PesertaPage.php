@@ -48,7 +48,7 @@ class PesertaPage extends Component
             // buat akun
             $user = new User();
             $user->username = $this->nik;
-            $user->password = Hash::make($this->password);
+            $user->password = Hash::make($this->tgl_lahir);
             $user->role = 'peserta';
             $user->isaktif = $this->isaktif;
             $user->save();
