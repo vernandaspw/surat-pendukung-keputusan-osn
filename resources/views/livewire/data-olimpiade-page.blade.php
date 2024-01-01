@@ -359,8 +359,10 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div class=""><b>Data OSN</b></div>
                             <div class="">
+                                @if(auth()->user()->role == 'admin')
                                 <button wire:click="$set('createPage', true)"
-                                    class="btn btn-success rounded-pill shadow-sm">OSN Baru</button>
+                                class="btn btn-success rounded-pill shadow-sm">OSN Baru</button>
+                                @endif
                             </div>
                         </div>
                     </div>

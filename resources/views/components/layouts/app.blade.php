@@ -87,7 +87,7 @@
                                 <span class="hide-menu">Akun</span>
                             </a>
                         </li>
-                        @endif  
+                        @endif
                     </ul>
                 </nav>
                 <!-- End Sidebar navigation -->
