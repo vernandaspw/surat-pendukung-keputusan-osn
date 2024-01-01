@@ -150,9 +150,11 @@
                                     <input required wire:model='peserta_lulus' class="form-control" type="number" id="">
                                 </div> --}}
 
+                                @if(auth()->user()->role == 'admin')
                                 <button type="submit" class="form-control btn btn-success shadow-sm">Simpan</button>
                                 <button type="button" wire:click='tutupPage'
                                     class="form-control btn btn-white border mt-1 shadow-sm">Kembali</button>
+                                @endif
                             </form>
                         </div>
                     </div>
@@ -263,12 +265,14 @@
                                 {{-- <button class="btn btn-success rounded-pill">Tambah Peserta</button> --}}
                             </div>
                             <div class="">
+                                @if(auth()->user()->role == 'admin')
                                 <button wire:click="$set('tambahPeserta', true)"
-                                    class="btn btn-warning rounded-pill">Tambah peserta</button>
-                                <button
-                                    onclick="confirm('Anda yakin generate peserta yang ikut seleksi?') || event.stopImmediatePropagation()"
-                                    wire:click="generateLulus()" class="btn btn-primary rounded-pill">Generate
-                                    Kelulusan</button>
+                                class="btn btn-warning rounded-pill">Tambah peserta</button>
+                            <button
+                                onclick="confirm('Anda yakin generate peserta yang ikut seleksi?') || event.stopImmediatePropagation()"
+                                wire:click="generateLulus()" class="btn btn-primary rounded-pill">Generate
+                                Kelulusan</button>
+                                @endif
                                 <select wire:model.live='rekomendasi' class="btn btn-success rounded-pill" id="">
                                     <option value="semua">semua</option>
                                     <option value="matematika">matematika</option>

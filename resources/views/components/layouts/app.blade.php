@@ -48,7 +48,7 @@
                                 <span class="hide-menu">Dashboard</span>
                             </a>
                         </li>
-                        @if(auth()->user()->role == 'admin')
+
                         <li class="sidebar-item ">
                             <a class="sidebar-link" href="{{ url('data-olimpiade', []) }}" aria-expanded="false">
                                 <span>
@@ -57,7 +57,7 @@
                                 <span class="hide-menu">Data OSN</span>
                             </a>
                         </li>
-
+                        @if(auth()->user()->role == 'admin')
                         <li class="nav-small-cap">
                             <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                             <span class="hide-menu">Data</span>
