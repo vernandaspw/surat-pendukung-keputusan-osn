@@ -69,12 +69,12 @@ class DataOlimpiadePage extends Component
     public $tgl_buka;
     public $tgl_tutup;
     public $tgl_pengumuman;
-    // public $bobot_matematika;
-    // public $bobot_rapot;
-    // public $bobot_ranking;
-    // public $bobot_fisika;
-    // public $bobot_kimia;
-    // public $bobot_biologi;
+    public $bobot_matematika;
+    public $bobot_rapot;
+    public $bobot_ranking;
+    public $bobot_fisika;
+    public $bobot_kimia;
+    public $bobot_biologi;
     // public $peserta_lulus;
     public $isaktif = true;
 
@@ -86,12 +86,12 @@ class DataOlimpiadePage extends Component
         $osn->tgl_buka = $this->tgl_buka;
         $osn->tgl_tutup = $this->tgl_tutup;
         $osn->tgl_pengumuman = $this->tgl_pengumuman;
-        // $osn->bobot_ranking = $this->bobot_ranking;
-        // $osn->bobot_rapot = $this->bobot_rapot;
-        // $osn->bobot_matematika = $this->bobot_matematika;
-        // $osn->bobot_fisika = $this->bobot_fisika;
-        // $osn->bobot_kimia = $this->bobot_kimia;
-        // $osn->bobot_biologi = $this->bobot_biologi;
+        $osn->bobot_ranking = $this->bobot_ranking;
+        $osn->bobot_rapot = $this->bobot_rapot;
+        $osn->bobot_matematika = $this->bobot_matematika;
+        $osn->bobot_fisika = $this->bobot_fisika;
+        $osn->bobot_kimia = $this->bobot_kimia;
+        $osn->bobot_biologi = $this->bobot_biologi;
         // $osn->peserta_lulus = $this->peserta_lulus;
         $osn->isaktif = $this->isaktif;
         $osn->save();
@@ -111,12 +111,12 @@ class DataOlimpiadePage extends Component
         $this->tgl_buka = $d->tgl_buka;
         $this->tgl_tutup = $d->tgl_tutup;
         $this->tgl_pengumuman = $d->tgl_pengumuman;
-        // $this->bobot_ranking = $d->bobot_ranking;
-        // $this->bobot_rapot = $d->bobot_rapot;
-        // $this->bobot_matematika = $d->bobot_matematika;
-        // $this->bobot_fisika = $d->bobot_fisika;
-        // $this->bobot_kimia = $d->bobot_kimia;
-        // $this->bobot_biologi = $d->bobot_biologi;
+        $this->bobot_ranking = $d->bobot_ranking;
+        $this->bobot_rapot = $d->bobot_rapot;
+        $this->bobot_matematika = $d->bobot_matematika;
+        $this->bobot_fisika = $d->bobot_fisika;
+        $this->bobot_kimia = $d->bobot_kimia;
+        $this->bobot_biologi = $d->bobot_biologi;
         // $this->peserta_lulus = $d->peserta_lulus;
         $this->isaktif = $d->isaktif;
     }
@@ -128,12 +128,12 @@ class DataOlimpiadePage extends Component
         $this->tgl_buka = null;
         $this->tgl_tutup = null;
         $this->tgl_pengumuman = null;
-        // $this->bobot_ranking = null;
-        // $this->bobot_rapot = null;
-        // $this->bobot_matematika = null;
-        // $this->bobot_fisika = null;
-        // $this->bobot_kimia = null;
-        // $this->bobot_biologi = null;
+        $this->bobot_ranking = null;
+        $this->bobot_rapot = null;
+        $this->bobot_matematika = null;
+        $this->bobot_fisika = null;
+        $this->bobot_kimia = null;
+        $this->bobot_biologi = null;
         // $this->peserta_lulus = null;
     }
 
@@ -145,12 +145,12 @@ class DataOlimpiadePage extends Component
         $osn->tgl_buka = $this->tgl_buka;
         $osn->tgl_tutup = $this->tgl_tutup;
         $osn->tgl_pengumuman = $this->tgl_pengumuman;
-        // $osn->bobot_rapot = $this->bobot_rapot;
-        // $osn->bobot_ranking = $this->bobot_ranking;
-        // $osn->bobot_matematika = $this->bobot_matematika;
-        // $osn->bobot_fisika = $this->bobot_fisika;
-        // $osn->bobot_kimia = $this->bobot_kimia;
-        // $osn->bobot_biologi = $this->bobot_biologi;
+        $osn->bobot_rapot = $this->bobot_rapot;
+        $osn->bobot_ranking = $this->bobot_ranking;
+        $osn->bobot_matematika = $this->bobot_matematika;
+        $osn->bobot_fisika = $this->bobot_fisika;
+        $osn->bobot_kimia = $this->bobot_kimia;
+        $osn->bobot_biologi = $this->bobot_biologi;
         // $osn->peserta_lulus = $this->peserta_lulus;
         $osn->isaktif = $this->isaktif;
         $osn->save();
@@ -327,10 +327,10 @@ class DataOlimpiadePage extends Component
         $nilaiSAW_kimia = [];
         $nilaiSAW_biologi = [];
         foreach ($matriksNormalisasi as $data) {
-            $totalBobotNormalisasi_matematika = $data['rapot'] + $data['matematika'] - $data['ranking'];
-            $totalBobotNormalisasi_fisika = $data['rapot'] + $data['fisika'] - $data['ranking'];
-            $totalBobotNormalisasi_kimia = $data['rapot'] + $data['kimia'] - $data['ranking'];
-            $totalBobotNormalisasi_biologi = $data['rapot'] + $data['biologi'] - $data['ranking'];
+            $totalBobotNormalisasi_matematika = ($data['rapot'] + $data['matematika'] - $data['ranking']) * ($osn->bobot_matematika + $osn->bobot_rapot - $osn->bobot_rapot);
+            $totalBobotNormalisasi_fisika = ($data['rapot'] + $data['fisika'] - $data['ranking']) * ($osn->bobot_fisika + $osn->bobot_rapot - $osn->bobot_rapot);
+            $totalBobotNormalisasi_kimia = ($data['rapot'] + $data['kimia'] - $data['ranking']) * ($osn->bobot_kimia + $osn->bobot_rapot - $osn->bobot_rapot);
+            $totalBobotNormalisasi_biologi = ($data['rapot'] + $data['biologi'] - $data['ranking']) * ($osn->bobot_biologi + $osn->bobot_rapot - $osn->bobot_rapot);
             $nilaiSAW_matematika[] = $totalBobotNormalisasi_matematika;
             $nilaiSAW_fisika[] = $totalBobotNormalisasi_fisika;
             $nilaiSAW_kimia[] = $totalBobotNormalisasi_kimia;
