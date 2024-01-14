@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\DataPeserta;
 use App\Models\Kelas;
+use App\Models\KriteriaNilai;
 use App\Models\Osn;
 use App\Models\OsnPeserta;
 use App\Models\SubKelas;
@@ -186,7 +187,8 @@ class DataOlimpiadePage extends Component
     public $c_nilai_kimia;
     public $c_nilai_biologi;
 
-    function tutupPesertaBaru() {
+    public function tutupPesertaBaru()
+    {
         $this->tambahPeserta = false;
         $this->c_peserta_id = null;
         $this->c_nik = null;
@@ -287,107 +289,128 @@ class DataOlimpiadePage extends Component
 
     public function generateLulus()
     {
-        $osn = Osn::find($this->editID);
-        $pesertas = OsnPeserta::where('osn_id', $this->editID)->get();
 
-        // Inisialisasi matriks normalisasi dan matriks bobot normalisasi
-        $matriksNormalisasi = [];
-        $matriksBobotNormalisasi = [];
+        try {
+            $osn = Osn::find($this->editID);
+            $pesertas = OsnPeserta::where('osn_id', $this->editID)->get();
 
-        // Hitung matriks normalisasi
-        foreach ($pesertas as $peserta) {
-            $matriksNormalisasi[] = [
-                'rapot' => $peserta->nilai_rapot / 100,
-                'ranking' => $peserta->nilai_ranking / 100,
-                'matematika' => $peserta->nilai_matematika / 100,
-                'fisika' => $peserta->nilai_fisika / 100,
-                'kimia' => $peserta->nilai_kimia / 100,
-                'biologi' => $peserta->nilai_biologi / 100,
-            ];
+            // menntukan bobot berdasarkan nilai_rapot peserta berdasarkan kriteria
+            // Determine bobot berdasarkan nilai_rapot peserta berdasarkan kriteria
+            $bobotPeserta = [];
+            foreach ($pesertas as $peserta) {
+                $bobotPeserta[] = [
+                    'rapot' => $this->determineBobot($peserta->nilai_rapot, 'rapot'),
+                    'ranking' => $this->determineBobot($peserta->nilai_ranking, 'ranking'),
+                    'matematika' => $this->determineBobot($peserta->nilai_matematika, 'matematika'),
+                    'fisika' => $this->determineBobot($peserta->nilai_fisika, 'fisika'),
+                    'kimia' => $this->determineBobot($peserta->nilai_kimia, 'kimia'),
+                    'biologi' => $this->determineBobot($peserta->nilai_biologi, 'biologi'),
+                ];
+            }
+
+            // Inisialisasi matriks normalisasi dan matriks bobot normalisasi
+            $matriksNormalisasi = [];
+            $matriksBobotNormalisasi = [];
+
+            // Hitung matriks normalisasi
+            foreach ($pesertas as $peserta) {
+                $matriksNormalisasi[] = [
+                    'rapot' => $peserta->nilai_rapot / 100,
+                    'ranking' => $peserta->nilai_ranking / 100,
+                    'matematika' => $peserta->nilai_matematika / 100,
+                    'fisika' => $peserta->nilai_fisika / 100,
+                    'kimia' => $peserta->nilai_kimia / 100,
+                    'biologi' => $peserta->nilai_biologi / 100,
+                ];
+            }
+
+            // Hitung matriks bobot normalisasi
+            foreach ($matriksNormalisasi as $key => $data) {
+                $matriksBobotNormalisasi[] = [
+                    'rapot' => $data['rapot'] * $bobotPeserta[$key]['rapot'],
+                    'ranking' => $data['ranking'] * $bobotPeserta[$key]['ranking'],
+                    'matematika' => $data['matematika'] * $bobotPeserta[$key]['matematika'],
+                    'fisika' => $data['fisika'] * $bobotPeserta[$key]['fisika'],
+                    'kimia' => $data['kimia'] * $bobotPeserta[$key]['kimia'],
+                    'biologi' => $data['biologi'] * $bobotPeserta[$key]['biologi'],
+                ];
+            }
+            // dd($matriksBobotNormalisasi);
+
+            // Hitung nilai SAW
+            // Hitung nilai SAW untuk semua mata pelajaran
+            $nilaiSAW = [];
+            foreach ($matriksNormalisasi as $data) {
+                $totalBobotNormalisasi_matematika = ($data['rapot'] + $data['matematika'] - $data['ranking']) * ($osn->bobot_matematika + $osn->bobot_rapot - $osn->bobot_rapot);
+                $totalBobotNormalisasi_fisika = ($data['rapot'] + $data['fisika'] - $data['ranking']) * ($osn->bobot_fisika + $osn->bobot_rapot - $osn->bobot_rapot);
+                $totalBobotNormalisasi_kimia = ($data['rapot'] + $data['kimia'] - $data['ranking']) * ($osn->bobot_kimia + $osn->bobot_rapot - $osn->bobot_rapot);
+                $totalBobotNormalisasi_biologi = ($data['rapot'] + $data['biologi'] - $data['ranking']) * ($osn->bobot_biologi + $osn->bobot_rapot - $osn->bobot_rapot);
+
+                // Hitung total nilai SAW untuk setiap mata pelajaran
+                $nilaiSAW[] = [
+                    'matematika' => $totalBobotNormalisasi_matematika,
+                    'fisika' => $totalBobotNormalisasi_fisika,
+                    'kimia' => $totalBobotNormalisasi_kimia,
+                    'biologi' => $totalBobotNormalisasi_biologi,
+                ];
+            }
+
+// Simpan nilai SAW ke dalam database (opsional)
+            $list_siswa = [];
+            foreach ($pesertas as $key => $data) {
+                $list_siswa[] = collect([
+                    'id' => $data->id,
+                    'nama_siswa' => $data->data_peserta->nama,
+                    'ranking' => $data->nilai_ranking,
+                    'matematika' => $data->nilai_matematika,
+                    'fisika' => $data->nilai_fisika,
+                    'kimia' => $data->nilai_kimia,
+                    'biologi' => $data->nilai_biologi,
+                    'nilai_saw_matematika' => $nilaiSAW[$key]['matematika'],
+                    'nilai_saw_fisika' => $nilaiSAW[$key]['fisika'],
+                    'nilai_saw_kimia' => $nilaiSAW[$key]['kimia'],
+                    'nilai_saw_biologi' => $nilaiSAW[$key]['biologi'],
+                ]);
+            }
+
+// Simpan nilai saw ke dalam database
+            foreach ($list_siswa as $itemPeserta) {
+                $up = OsnPeserta::find($itemPeserta['id']);
+                $up->nilai_saw_matematika = $itemPeserta['nilai_saw_matematika'];
+                $up->nilai_saw_fisika = $itemPeserta['nilai_saw_fisika'];
+                $up->nilai_saw_kimia = $itemPeserta['nilai_saw_kimia'];
+                $up->nilai_saw_biologi = $itemPeserta['nilai_saw_biologi'];
+
+                // Menentukan mata pelajaran dengan nilai terbesar sebagai rekomendasi
+                $nilaiMapel = [
+                    'matematika' => $itemPeserta['nilai_saw_matematika'],
+                    'fisika' => $itemPeserta['nilai_saw_fisika'],
+                    'kimia' => $itemPeserta['nilai_saw_kimia'],
+                    'biologi' => $itemPeserta['nilai_saw_biologi'],
+                ];
+                $nilaiTerbesar = max($nilaiMapel);
+                $mataPelajaranTerbesar = array_search($nilaiTerbesar, $nilaiMapel);
+                $up->rekomendasi = $mataPelajaranTerbesar;
+                $up->save();
+            }
+
+            $this->dispatch('success', pesan: 'berhasil generate peserta yg lulus');
+        } catch (\Throwable $e) {
+            dd($e);
+            //throw $th;
         }
-
-        // dd($matriksNormalisasi);
-        // Hitung matriks bobot normalisasi
-        // foreach ($matriksNormalisasi as $data) {
-        //     $matriksBobotNormalisasi[] = [
-        //         'id' => $data['id'],
-        //         'rapot' => $data['rapot'] * $osn->bobot_rapot,
-        //         'ranking' => $data['ranking'] * $osn->bobot_ranking,
-        //         'matematika' => $data['matematika'] * $osn->bobot_matematika,
-        //         'fisika' => $data['fisika'] * $osn->bobot_fisika,
-        //         'kimia' => $data['kimia'] * $osn->bobot_kimia,
-        //         'biologi' => $data['biologi'] * $osn->bobot_biologi,
-        //     ];
-        // }
-        // dd( $matriksBobotNormalisasi);
-
-        // Hitung nilai SAW
-        $nilaiSAW_matematika = [];
-        $nilaiSAW_fisika = [];
-        $nilaiSAW_kimia = [];
-        $nilaiSAW_biologi = [];
-        foreach ($matriksNormalisasi as $data) {
-            $totalBobotNormalisasi_matematika = ($data['rapot'] + $data['matematika'] - $data['ranking']) * ($osn->bobot_matematika + $osn->bobot_rapot - $osn->bobot_rapot);
-            $totalBobotNormalisasi_fisika = ($data['rapot'] + $data['fisika'] - $data['ranking']) * ($osn->bobot_fisika + $osn->bobot_rapot - $osn->bobot_rapot);
-            $totalBobotNormalisasi_kimia = ($data['rapot'] + $data['kimia'] - $data['ranking']) * ($osn->bobot_kimia + $osn->bobot_rapot - $osn->bobot_rapot);
-            $totalBobotNormalisasi_biologi = ($data['rapot'] + $data['biologi'] - $data['ranking']) * ($osn->bobot_biologi + $osn->bobot_rapot - $osn->bobot_rapot);
-            $nilaiSAW_matematika[] = $totalBobotNormalisasi_matematika;
-            $nilaiSAW_fisika[] = $totalBobotNormalisasi_fisika;
-            $nilaiSAW_kimia[] = $totalBobotNormalisasi_kimia;
-            $nilaiSAW_biologi[] = $totalBobotNormalisasi_biologi;
-        }
-
-        // Simpan nilai SAW ke dalam database (opsional)
-        $list_siswa = [];
-        foreach ($pesertas as $key => $data) {
-
-            $list_siswa[] = collect([
-                'id' => $data->id,
-                'nama_siswa' => $data->data_peserta->nama,
-                'ranking' => $data->nilai_ranking,
-                'matematika' => $data->nilai_matematika,
-                'fisika' => $data->nilai_fisika,
-                'kimia' => $data->nilai_kimia,
-                'biologi' => $data->nilai_biologi,
-                'nilai_saw_matematika' => $nilaiSAW_matematika[$key],
-                'nilai_saw_fisika' => $nilaiSAW_fisika[$key],
-                'nilai_saw_kimia' => $nilaiSAW_kimia[$key],
-                'nilai_saw_biologi' => $nilaiSAW_biologi[$key],
-            ]);
-        }
-
-        // simpan nilai saw
-        foreach ($list_siswa as $itemPeserta) {
-            $up = OsnPeserta::find($itemPeserta['id']);
-            $up->nilai_saw_matematika = $itemPeserta['nilai_saw_matematika'];
-            $up->nilai_saw_fisika = $itemPeserta['nilai_saw_fisika'];
-            $up->nilai_saw_kimia = $itemPeserta['nilai_saw_kimia'];
-            $up->nilai_saw_biologi = $itemPeserta['nilai_saw_biologi'];
-
-            $nilaiMapel = array(
-                'matematika' => $itemPeserta['nilai_saw_matematika'],
-                'fisika' => $itemPeserta['nilai_saw_fisika'],
-                'kimia' => $itemPeserta['nilai_saw_kimia'],
-                'biologi' => $itemPeserta['nilai_saw_biologi'],
-            );
-            // Menentukan nilai terbesar
-            $nilaiTerbesar = max($nilaiMapel);
-            // Menentukan mata pelajaran dengan nilai terbesar
-            $mataPelajaranTerbesar = array_search($nilaiTerbesar, $nilaiMapel);
-            $up->rekomendasi = $mataPelajaranTerbesar;
-            $up->save();
-        }
-
-        // $list_siswa = collect($list_siswa)->sortByDesc('nilai_saw')->values()->all();
-        // $topJumlahLulus = array_slice($list_siswa, 0, $osn->peserta_lulus);
-
-        // foreach ($topJumlahLulus as $itemP) {
-        //     $up = OsnPeserta::find($itemP['id']);
-        //     $up->status_lulus = true;
-        //     $up->save();
-        // }
-
-        $this->dispatch('success', pesan: 'berhasil generate peserta yg lulus');
     }
 
+    private function determineBobot($nilai, $kriteria)
+    {
+        $bobotNilai = KriteriaNilai::get();
+        foreach ($bobotNilai as $bobot) {
+            if ($bobot->kriteria == $kriteria) {
+                if ($nilai >= $bobot->nilai_awal && $nilai <= $bobot->nilai_akhir) {
+                    return $bobot->bobot;
+                }
+            }
+        }
+        return 0; // Default value if criteria not found
+    }
 }

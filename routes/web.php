@@ -6,6 +6,7 @@ use App\Livewire\DataOlimpiadeDetailPage;
 use App\Livewire\DataOlimpiadePage;
 use App\Livewire\HomePage;
 use App\Livewire\KelasPage;
+use App\Livewire\KriteriaBobotPage;
 use App\Livewire\PesertaPage;
 use Illuminate\Support\Facades\Route;
 
@@ -31,6 +32,7 @@ Route::get('/', HomePage::class)->name('/');
 Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', DashboardPage::class);
     Route::get('akun', AkunPage::class);
+    Route::get('kriteria-bobot', KriteriaBobotPage::class);
     Route::get('data-olimpiade', DataOlimpiadePage::class);
     Route::get('data-olimpiade/{id}', DataOlimpiadeDetailPage::class);
     Route::get('kelas', KelasPage::class);
