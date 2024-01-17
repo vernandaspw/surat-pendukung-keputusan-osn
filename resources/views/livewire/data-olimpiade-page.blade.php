@@ -35,7 +35,7 @@
                                     <label for="">tgl pengumuman</label>
                                     <input required wire:model='tgl_pengumuman' class="form-control" type="date" id="">
                                 </div>
-                                <div class="mb-1">
+                                {{-- <div class="mb-1">
                                     <label for="">bobot ranking</label>
                                     <input required wire:model='bobot_ranking' class="form-control" type="number"
                                         min="1" max="5" id="">
@@ -64,7 +64,7 @@
                                     <label for="">bobot biologi</label>
                                     <input required wire:model='bobot_biologi' class="form-control" type="number"
                                         min="1" max="5" id="">
-                                </div>
+                                </div> --}}
                                 {{-- <div class="mb-1">
                                     <label for="">Jumlah peserta yg lulus</label>
                                     <input required wire:model='peserta_lulus' class="form-control" type="number" id="">
@@ -115,7 +115,7 @@
                                     <label for="">tgl pengumuman</label>
                                     <input required wire:model='tgl_pengumuman' class="form-control" type="date" id="">
                                 </div>
-                                <div class="mb-1">
+                                {{-- <div class="mb-1">
                                     <label for="">bobot ranking</label>
                                     <input required wire:model='bobot_ranking' class="form-control" type="number"
                                         min="1" max="5" id="">
@@ -144,7 +144,7 @@
                                     <label for="">bobot biologi</label>
                                     <input required wire:model='bobot_biologi' class="form-control" type="number"
                                         min="1" max="5" id="">
-                                </div>
+                                </div> --}}
                                 {{-- <div class="mb-1">
                                     <label for="">Jumlah peserta yg lulus</label>
                                     <input required wire:model='peserta_lulus' class="form-control" type="number" id="">
@@ -378,12 +378,12 @@
                                     <th>Tgl mulai Pendaftaran</th>
                                     <th>Tgl tutup Pendaftaran</th>
                                     <th>Tgl pengumuman</th>
-                                    <th>bobot ranking</th>
+                                    {{-- <th>bobot ranking</th>
                                     <th>bobot rapot</th>
                                     <th>bobot matematika</th>
                                     <th>bobot fisika</th>
                                     <th>bobot kimia</th>
-                                    <th>bobot biologi</th>
+                                    <th>bobot biologi</th> --}}
                                     {{-- <th>Jml yg lulus</th> --}}
                                     <th>Status</th>
                                     <th>Peserta saat ini</th>
@@ -395,12 +395,12 @@
                                         <td>{{ $data->tgl_buka }}</td>
                                         <td>{{ $data->tgl_tutup }}</td>
                                         <td>{{ $data->tgl_pengumuman }}</td>
-                                        <td>{{ $data->bobot_ranking }}</td>
+                                        {{-- <td>{{ $data->bobot_ranking }}</td>
                                         <td>{{ $data->bobot_rapot }}</td>
                                         <td>{{ $data->bobot_matematika }}</td>
                                         <td>{{ $data->bobot_fisika }}</td>
                                         <td>{{ $data->bobot_kimia }}</td>
-                                        <td>{{ $data->bobot_biologi }}</td>
+                                        <td>{{ $data->bobot_biologi }}</td> --}}
                                         {{-- <td>{{ $data->peserta_lulus }}</td> --}}
                                         <td>{{ $data->isaktif ? 'Buka' : 'tutup'}}</td>
                                         <td>
