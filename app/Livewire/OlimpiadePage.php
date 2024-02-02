@@ -89,7 +89,7 @@ class OlimpiadePage extends Component
         $op->user_id = auth()->user()->id;
         $op->data_peserta_id = auth()->user()->data_peserta->id;
         $op->nilai_ranking = $this->nilai_ranking;
-        $op->nilai_rapot = $this->nilai_rapot;
+        $op->nilai_rapot = $this->nilai_rapot ? $this->nilai_rapot : 0;
         $op->nilai_matematika = $this->nilai_matematika;
         $op->nilai_fisika = $this->nilai_fisika;
         $op->nilai_kimia = $this->nilai_kimia;
@@ -111,5 +111,5 @@ class OlimpiadePage extends Component
         $this->nilai_biologi = null;
     }
 
-    
+
 }

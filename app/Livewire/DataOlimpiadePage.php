@@ -248,7 +248,7 @@ class DataOlimpiadePage extends Component
             $op->user_id = $user->id;
             $op->data_peserta_id = $dp->id;
             $op->nilai_ranking = $this->c_nilai_ranking;
-            $op->nilai_rapot = $this->c_nilai_rapot;
+            $op->nilai_rapot = $this->c_nilai_rapot ? $this->c_nilai_rapot : 0;
             $op->nilai_matematika = $this->c_nilai_matematika;
             $op->nilai_fisika = $this->c_nilai_fisika;
             $op->nilai_kimia = $this->c_nilai_kimia;
@@ -355,7 +355,7 @@ class DataOlimpiadePage extends Component
                 ];
             }
 
-// Simpan nilai SAW ke dalam database (opsional)
+        // Simpan nilai SAW ke dalam database (opsional)
             $list_siswa = [];
             foreach ($pesertas as $key => $data) {
                 $list_siswa[] = collect([
@@ -373,7 +373,7 @@ class DataOlimpiadePage extends Component
                 ]);
             }
 
-// Simpan nilai saw ke dalam database
+            // Simpan nilai saw ke dalam database
             foreach ($list_siswa as $itemPeserta) {
                 $up = OsnPeserta::find($itemPeserta['id']);
                 $up->nilai_saw_matematika = $itemPeserta['nilai_saw_matematika'];

@@ -214,11 +214,11 @@
                                     <input type="number" wire:model='c_nilai_ranking' max="100" min="0" id=""
                                         class="form-control">
                                 </div>
-                                <div class="mb-1">
+                                {{-- <div class="mb-1">
                                     <label for="">Nilai Rapot</label>
                                     <input type="number" wire:model='c_nilai_rapot' max="100" min="0" id=""
                                         class="form-control">
-                                </div>
+                                </div> --}}
                                 <div class="mb-1">
                                     <label for="">Nilai Matematika (0-100)</label>
                                     <input type="number" wire:model='c_nilai_matematika' max="100" min="0" id=""
@@ -295,7 +295,7 @@
                                         <th>Tgl lahir</th>
                                         <th>Kelas</th>
                                         <th>Ranking</th>
-                                        <th>Rapot</th>
+                                        {{-- <th>Rapot</th> --}}
                                         <th>Matematika</th>
                                         <th>Fisika</th>
                                         <th>Kimia</th>
@@ -323,9 +323,9 @@
                                             <td>
                                                 {{ $peserta->nilai_ranking }}
                                             </td>
-                                            <td>
+                                            {{-- <td>
                                                 {{ $peserta->nilai_rapot }}
-                                            </td>
+                                            </td> --}}
                                             <td>
                                                 <b>{{ $peserta->nilai_matematika }}</b> ({{
                                                 $peserta->nilai_saw_matematika }})
